@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      form {
+        margin-top: 200px;
+        margin-left: 600px;
+      }
+    </style>
+    <script>
+        function checking() {
+            var s = document.getElementById("email-add").value;
+            var reg = /^[a-z0-9]+@gmail\.[c][o][m]{1}$/i;
+            if (s.match(reg)) alert("Your email is correct format");
+            else alert("email is not in correct format");
+        }
+    </script>
+  </head>
+  <body>
+    <form action="">
+      <label for="">Email Address</label> <br />
+      <br />
+      <input type="email" name="" id="email-add" required /> <br />
+      <button type="button" onclick="checking()">click me</button>
+    </form>
+  </body>
+</html>

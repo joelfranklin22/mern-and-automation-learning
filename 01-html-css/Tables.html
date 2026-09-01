@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tables</title>
+    <style>
+      table,
+      td,
+      th {
+        border: 2px solid black;
+        font-size: 30px;
+        padding: 10px;
+        border-collapse: collapse;
+      }
+      tfoot {
+        text-align: left;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Tables</h1>
+    <table>
+      <thead>
+        <tr>
+          <th colspan="2">Expenses</th>
+        </tr>
+        <tr>
+          <th>Product</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Tomato</td>
+          <td>$120</td>
+        </tr>
+        <tr>
+          <td>Orange</td>
+          <td>$100</td>
+        </tr>
+        <tr>
+          <td>Mango</td>
+          <td>$80</td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr>
+          <th>Total</th>
+          <th>$300</th>
+        </tr>
+      </tfoot>
+    </table>
+  </body>
+</html>

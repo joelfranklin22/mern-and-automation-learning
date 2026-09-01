@@ -1,0 +1,258 @@
+{
+  "name": "My workflow 3",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "fc418111-85d8-484b-a2c1-4e5200017c2b",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1280,
+        -512
+      ],
+      "id": "d624bdff-4c84-43e7-9fd9-c2dde5f4f04e",
+      "name": "Webhook",
+      "webhookId": "fc418111-85d8-484b-a2c1-4e5200017c2b"
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "tableId": "User_Details",
+        "filters": {
+          "conditions": [
+            {
+              "keyName": "Email",
+              "keyValue": "={{ $json.body.email }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -1056,
+        -512
+      ],
+      "id": "c4ef8e02-1b72-4e71-8412-1c5ecd52efc7",
+      "name": "Get a row",
+      "alwaysOutputData": true,
+      "credentials": {
+        "supabaseApi": {
+          "id": "pIqoxUd14GsR3t0D",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "\"Email is Already Registered\"",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -608,
+        -608
+      ],
+      "id": "136262c8-30fa-4cde-a664-665474a63983",
+      "name": "Respond to Webhook1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "9eac1809-c9e8-41a1-aeaa-34465eba841a",
+              "leftValue": "={{ $json.Email }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "exists",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        -832,
+        -512
+      ],
+      "id": "4214ffd0-71da-4533-a4f9-9c377626a08a",
+      "name": "If"
+    },
+    {
+      "parameters": {
+        "tableId": "User_Details",
+        "fieldsUi": {
+          "fieldValues": [
+            {
+              "fieldId": "Email",
+              "fieldValue": "={{ $('Webhook').item.json.body.email }}"
+            },
+            {
+              "fieldId": "Password",
+              "fieldValue": "={{ $('Webhook').item.json.body.password }}"
+            }
+          ]
+        }
+      },
+      "type": "n8n-nodes-base.supabase",
+      "typeVersion": 1,
+      "position": [
+        -608,
+        -416
+      ],
+      "id": "1745a398-865d-4e62-9c66-2abe180feff3",
+      "name": "Create a row",
+      "credentials": {
+        "supabaseApi": {
+          "id": "pIqoxUd14GsR3t0D",
+          "name": "Supabase account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "\"Registered Successfully\"",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.4,
+      "position": [
+        -384,
+        -416
+      ],
+      "id": "80876cfd-45eb-47a5-be61-ce1234b24c16",
+      "name": "Respond to Webhook"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "d2333563-9c32-4451-8c03-d70aa534f90c",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        96,
+        -96
+      ],
+      "id": "05d448b4-05ff-4598-8d99-f9bf219dc35a",
+      "name": "Webhook1",
+      "webhookId": "d2333563-9c32-4451-8c03-d70aa534f90c"
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={\n  \"name\":\"{{ $json.body.username }}\",\n  \"email\":\"{{ $json.body.email }}\",\n  \"password\":\"{{ $json.body.password }}\"\n} ",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.5,
+      "position": [
+        528,
+        -128
+      ],
+      "id": "15e97123-2034-43ca-bedf-3171c80f6c6d",
+      "name": "Respond to Webhook2"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Get a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get a row": {
+      "main": [
+        [
+          {
+            "node": "If",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "If": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook1",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Create a row",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Create a row": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Webhook1": {
+      "main": [
+        [
+          {
+            "node": "Respond to Webhook2",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "callerPolicy": "workflowsFromSameOwner",
+    "availableInMCP": false
+  },
+  "versionId": "dec6df8b-1799-497c-b33f-6424af2ab649",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "872cf515a8a57099421277b576e119a5b910866ac7ead4ce8d8314cc3d209e11"
+  },
+  "nodeGroups": [],
+  "id": "Hlu83kCDG3854yjL",
+  "tags": []
+}

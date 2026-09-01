@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      function cal() {
+        // Palindrome
+        var str = document.getElementById("value").value;
+        var copy = "";
+        var n = str.length;
+        for (var i = n - 1; i >= 0; i--) {
+          copy += str.charAt(i);
+        }
+        if (str.includes(copy))
+          document.getElementById("palindrome").value = "It is palindrome";
+        else
+          document.getElementById("palindrome").value = "It is not Palindrome";
+
+        //Title Case
+        var str1 = str.trim();
+        var title = "";
+        for (i = 0; i < str1.length; i++) {
+          if (i == 0 && str1.charAt(i) != " ")
+            title += str1.charAt(i).toUpperCase();
+          else if (str1.charAt(i) == " ") {
+            var p = i;
+            title += str1.charAt(i);
+            if (str.charAt(++p) != " ") {
+              title += str1.charAt(i + 1).toUpperCase();
+              i++;
+            } else if (str1.charAt(p) == " ") {
+            }
+          } else {
+            title += str1.charAt(i);
+          }
+        }
+        document.getElementById("out").value = title;
+      }
+    </script>
+  </head>
+  <body>
+    <form>
+      <input type="text" id="value" />
+      <input type="button" id="button" onclick="cal()" value="Click ME" />
+      <input type="text" id="palindrome" />
+      <input type="text" id="out" />
+    </form>
+  </body>
+</html>
