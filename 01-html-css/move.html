@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .container {
+        display: flex;
+        justify-content: space-evenly;
+        align-items: flex-start;
+        height: 100vh;
+        width: 100%;
+      }
+      .box-1,
+      .box-3,
+      .box-2 {
+        width: 200px;
+        height: 200px;
+        background-color: red;
+      }
+      .box-1 {
+        position: absolute;
+      }
+      .box-2 {
+        background-color: deeppink;
+        display: none;
+      }
+      .box-3 {
+        display: none;
+        background-color: deepskyblue;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div id="box" class="box-1">38</div>
+      <div class="box-2 box">38</div>
+      <div class="box-3 box">38</div>
+    </div>
+    <script>
+      let box = document.getElementById("box");
+      let box2 = document.getElementsByClassName("box-2")[0];
+      let box3 = document.getElementsByClassName("box-3")[0];
+
+      let isdrag = false;
+      let offsetX = 0;
+      let offsetY = 0;
+
+      box.addEventListener("mousedown", function (e) {
+        isdrag = true;
+        offsetX = e.clientX - box.offsetLeft;
+        offsetY = e.clientY - box.offsetTop;
+
+        box.style.cursor = "grabbing";
+        box2.style.display = "block";
+        box3.style.display = "block";
+      });
+      document.addEventListener("mousemove", function (e) {
+        if (isdrag) {
+          box.style.left = e.clientX - offsetX + "px";
+          box.style.top = e.clientY - offsetY + "px";
+        }
+      });
+      document.addEventListener("mouseup", function (e) {
+        isdrag = false;
+        box.style.cursor = "grab";
+        setTimeout(() => {
+          box2.style.display = "none";
+          box3.style.display = "none";
+        }, 100000);
+      });
+    </script>
+  </body>
+</html>

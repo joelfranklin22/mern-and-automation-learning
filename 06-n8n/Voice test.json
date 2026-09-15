@@ -1,0 +1,137 @@
+{
+  "name": "Voice test",
+  "nodes": [
+    {
+      "parameters": {
+        "resource": "audio",
+        "input": "={{ $json.message.text }}",
+        "voice": "fable",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.openAi",
+      "typeVersion": 1.8,
+      "position": [
+        -448,
+        -80
+      ],
+      "id": "99bfefc6-54ee-43cd-992c-bcdb21ae6bfb",
+      "name": "Generate audio",
+      "credentials": {
+        "openAiApi": {
+          "id": "x1fhqwCIHyME970g",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -672,
+        -80
+      ],
+      "id": "99ad0936-125d-4a4d-bfa0-a8f985c2572b",
+      "name": "Telegram Trigger",
+      "webhookId": "80676c13-d6fe-44ac-94f2-6afd8af2caab",
+      "credentials": {
+        "telegramApi": {
+          "id": "oU1OLxMdTUz09ags",
+          "name": "MachiBot"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "sendAudio",
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "binaryData": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        -240,
+        -80
+      ],
+      "id": "8db5e897-fc23-4c7c-8f1b-77c4a14ecd27",
+      "name": "Send an audio file",
+      "webhookId": "09198d0f-eb56-487e-81e2-8982387d3c15",
+      "credentials": {
+        "telegramApi": {
+          "id": "oU1OLxMdTUz09ags",
+          "name": "MachiBot"
+        }
+      }
+    }
+  ],
+  "pinData": {
+    "Telegram Trigger": [
+      {
+        "json": {
+          "update_id": 906385473,
+          "message": {
+            "message_id": 554,
+            "from": {
+              "id": 5051878606,
+              "is_bot": false,
+              "first_name": "Joel",
+              "username": "JebastinJohnson",
+              "language_code": "en"
+            },
+            "chat": {
+              "id": 5051878606,
+              "first_name": "Joel",
+              "username": "JebastinJohnson",
+              "type": "private"
+            },
+            "date": 1755165966,
+            "text": "hii I am not working in n8n to play with my family and friends are you to design for the boy is best for you to be a problem with the best for"
+          }
+        }
+      }
+    ]
+  },
+  "connections": {
+    "Generate audio": {
+      "main": [
+        [
+          {
+            "node": "Send an audio file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "Generate audio",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "fe289514-f8dc-4bf3-b49d-9fa9b8f48179",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "872cf515a8a57099421277b576e119a5b910866ac7ead4ce8d8314cc3d209e11"
+  },
+  "nodeGroups": [],
+  "id": "sLs7jhdcwarZ3AjH",
+  "tags": []
+}

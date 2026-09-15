@@ -1,0 +1,439 @@
+{
+  "name": "Document Content Extractor",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "messages"
+        ],
+        "options": {}
+      },
+      "type": "n8n-nodes-base.whatsAppTrigger",
+      "typeVersion": 1,
+      "position": [
+        -480,
+        0
+      ],
+      "id": "ca384d90-518f-49d2-ad20-63fedbe2301b",
+      "name": "WhatsApp Trigger",
+      "webhookId": "87d4eb71-ced5-49b2-9a37-da0ee59a6c9b",
+      "credentials": {
+        "whatsAppTriggerApi": {
+          "id": "nxMdpeTTuwAPd2QK",
+          "name": "WhatsApp OAuth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.text }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2.1,
+      "position": [
+        864,
+        0
+      ],
+      "id": "ca4366b0-0cf3-4d63-a391-005967b628be",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "resource": "media",
+        "operation": "mediaUrlGet",
+        "mediaGetId": "={{ $json.messages[0].document.id }}"
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        -256,
+        0
+      ],
+      "id": "9db0b240-f5b8-4162-99c9-897bcef86dc0",
+      "name": "Download media",
+      "webhookId": "afe6073a-5441-4af8-82c9-2fdfc682aaff",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "ccrFmzLLiuVgt8UE",
+          "name": "WhatsApp account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "name": "={{ $json.url }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "1cDpii9hcdAKIfPfT8Tv0ZD99_lZUbqvf",
+          "mode": "list",
+          "cachedResultName": "Upload File ",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/1cDpii9hcdAKIfPfT8Tv0ZD99_lZUbqvf"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        192,
+        0
+      ],
+      "id": "b4aa9207-40f0-41f5-9f44-8b56e29981b7",
+      "name": "Upload file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1YAZP29SMVBNJnpZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "={{ $json.url }}",
+        "authentication": "genericCredentialType",
+        "genericAuthType": "httpBearerAuth",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {}
+          ]
+        },
+        "options": {
+          "response": {
+            "response": {
+              "neverError": true,
+              "responseFormat": "file"
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "88f01b05-e4fa-4342-8dfd-2fbffda1dcb7",
+      "name": "HTTP Request",
+      "credentials": {
+        "httpBearerAuth": {
+          "id": "ZlcWbsLXeSyMNHZg",
+          "name": "Bearer Auth account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json[\"id\"] }}\n",
+          "mode": "id"
+        },
+        "options": {
+          "fileName": "={{ $('WhatsApp Trigger').item.json.messages[0].document.filename.replace(/\\.pdf$/i, '') }}"
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        416,
+        0
+      ],
+      "id": "7a1cee66-0b9d-4afc-a259-1f7aabe62aa5",
+      "name": "Download file",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1YAZP29SMVBNJnpZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "pdf",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1,
+      "position": [
+        640,
+        0
+      ],
+      "id": "7558ad70-2ab2-49a1-a87a-e6c6426cd465",
+      "name": "Extract from File"
+    },
+    {
+      "parameters": {
+        "operation": "toText",
+        "sourceProperty": "output",
+        "options": {
+          "fileName": "={{ $('WhatsApp Trigger').item.json.messages[0].document.filename.replace(/\\.pdf$/i, '') }}"
+        }
+      },
+      "type": "n8n-nodes-base.convertToFile",
+      "typeVersion": 1.1,
+      "position": [
+        1264,
+        0
+      ],
+      "id": "7ed5f4b4-c978-4a8e-8b4c-d14a669b34aa",
+      "name": "Convert to File"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "mode": "list",
+          "value": "gpt-4.1-mini"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        880,
+        224
+      ],
+      "id": "773fd514-45a8-478b-a61f-5bc2b751ab69",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "x1fhqwCIHyME970g",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "value": "10MORfPABagvmMQvyTM8QLI6tY6hufPz1",
+          "mode": "list",
+          "cachedResultName": "Converted File",
+          "cachedResultUrl": "https://drive.google.com/drive/folders/10MORfPABagvmMQvyTM8QLI6tY6hufPz1"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1488,
+        0
+      ],
+      "id": "11627afc-44ec-476c-a2c2-52c45c47a0d8",
+      "name": "Upload file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1YAZP29SMVBNJnpZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "value": "={{ $json.id }}",
+          "mode": "id"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        1712,
+        0
+      ],
+      "id": "42bc33ba-c760-4285-905a-88d671510274",
+      "name": "Download file1",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "1YAZP29SMVBNJnpZ",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "send",
+        "phoneNumberId": "733256169865410",
+        "recipientPhoneNumber": "= {{ $('WhatsApp Trigger').item.json.contacts[0].wa_id }}",
+        "messageType": "document",
+        "mediaPath": "useMedian8n",
+        "additionalFields": {
+          "mediaFilename": "={{ $('WhatsApp Trigger').item.json.messages[0].document.filename.replace(/\\.pdf$/i, '') }}\n"
+        }
+      },
+      "type": "n8n-nodes-base.whatsApp",
+      "typeVersion": 1,
+      "position": [
+        1936,
+        0
+      ],
+      "id": "3b41bb9f-166a-490a-a41f-62015e3e0658",
+      "name": "Send message",
+      "webhookId": "3013973e-d50d-424d-943d-3d1a96f6b7fe",
+      "credentials": {
+        "whatsAppApi": {
+          "id": "ccrFmzLLiuVgt8UE",
+          "name": "WhatsApp account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "WhatsApp Trigger": {
+      "main": [
+        [
+          {
+            "node": "Download media",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Convert to File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download media": {
+      "main": [
+        [
+          {
+            "node": "HTTP Request",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file": {
+      "main": [
+        [
+          {
+            "node": "Download file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTTP Request": {
+      "main": [
+        [
+          {
+            "node": "Upload file",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file": {
+      "main": [
+        [
+          {
+            "node": "Extract from File",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Extract from File": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Convert to File": {
+      "main": [
+        [
+          {
+            "node": "Upload file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Upload file1": {
+      "main": [
+        [
+          {
+            "node": "Download file1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Download file1": {
+      "main": [
+        [
+          {
+            "node": "Send message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send message": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "d8d99999-24d1-4fd8-bae4-6689d341bb33",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "872cf515a8a57099421277b576e119a5b910866ac7ead4ce8d8314cc3d209e11"
+  },
+  "nodeGroups": [],
+  "id": "AlAUOcdLYTCecL9L",
+  "tags": []
+}

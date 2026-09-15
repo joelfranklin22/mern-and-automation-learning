@@ -1,0 +1,172 @@
+{
+  "name": "Telegram Basic",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "*",
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.2,
+      "position": [
+        -576,
+        -240
+      ],
+      "id": "ba9dbc69-160e-4394-a6ce-435d61590312",
+      "name": "Telegram Trigger",
+      "webhookId": "f4e5f621-827c-42f8-9850-86d83834b841",
+      "credentials": {
+        "telegramApi": {
+          "id": "QuFyqR8xL6qhy4PE",
+          "name": "Jarvis Agent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}\nPROMPT:\n  1.DATETIME:{{ $now }}\n",
+        "options": {
+          "systemMessage": "=I'm Jarvis, your personal AI assistant.\nHow can I assist you today?\n\n#PROMPT\n  1.If the user triggers for the first time only reply with,\n    Hi! {{ $json.message.from.first_name }}.I am Jarvis your Personal Assitant\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 2,
+      "position": [
+        -256,
+        -240
+      ],
+      "id": "67101ed2-fa8c-4932-a0fd-d900053407ba",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.first_name }}",
+        "contextWindowLength": 10
+      },
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.3,
+      "position": [
+        -176,
+        0
+      ],
+      "id": "19cf5667-f8da-4ba4-ae35-61b0ddf8e959",
+      "name": "Simple Memory"
+    },
+    {
+      "parameters": {
+        "model": {
+          "__rl": true,
+          "value": "gpt-4.1-nano",
+          "mode": "list",
+          "cachedResultName": "gpt-4.1-nano"
+        },
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatOpenAi",
+      "typeVersion": 1.2,
+      "position": [
+        -336,
+        0
+      ],
+      "id": "788e3da7-9bf1-47a2-a6f9-8101a26b70a9",
+      "name": "OpenAI Chat Model",
+      "credentials": {
+        "openAiApi": {
+          "id": "x1fhqwCIHyME970g",
+          "name": "OpenAi account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "text": "={{ $json.output }}",
+        "additionalFields": {
+          "appendAttribution": false
+        }
+      },
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        272,
+        -240
+      ],
+      "id": "f6efceb3-3e65-4ac5-a17d-60e1b871defb",
+      "name": "Send a text message",
+      "webhookId": "e225ed49-0846-4011-8c48-e7545b2a86db",
+      "credentials": {
+        "telegramApi": {
+          "id": "QuFyqR8xL6qhy4PE",
+          "name": "Jarvis Agent"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "OpenAI Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Send a text message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "timezone": "Asia/Kolkata",
+    "callerPolicy": "workflowsFromSameOwner"
+  },
+  "versionId": "df53bea4-d7a1-4b39-885e-d252ba5bab1d",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "872cf515a8a57099421277b576e119a5b910866ac7ead4ce8d8314cc3d209e11"
+  },
+  "nodeGroups": [],
+  "id": "wBzdillF5N9uctGv",
+  "tags": []
+}

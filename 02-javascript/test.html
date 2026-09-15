@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <script>
+      var n = window.prompt("enter the limit:");
+      var a = new Array(n);
+      for (var i = 0; i < n; i++) {
+        a[i] = parseInt(window.prompt("enter the element"));
+      }
+      // var b = new Array(n);
+      // for (var i = 0; i < n; i++) {
+      //   b[i] = parseInt(window.prompt("enter the element"));
+      // }
+      var k = 0;
+      var j = 1,
+        i = 0;
+      var b = [];
+      while (i < n && j <= n) {
+        if (a[i] == a[j]) {
+          k = 1;
+        }
+        if (j >= n) {
+          i++;
+          j = 0;
+        }
+        j++;
+        if (k == 0) {
+          b.push(a[i]);
+          i++;
+          j = 0;
+        }
+      }
+      document.write(b);
+      // Method -1
+      // var c = a.length;
+      // var d = b.length + c;
+      // for (var i = c, o = 0; i < d && o < d; i++, o++) {
+      //   a[i] = b[o];
+      // }
+      // for (var i = 0; i < b.length; i++) parseInt(a.push(b[i]));
+      // a.sort();
+      // document.write(k + "<br>");
+    </script>
+  </head>
+  <body></body>
+</html>

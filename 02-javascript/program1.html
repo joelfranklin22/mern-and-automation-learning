@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script>
+    //  function add(){
+    //     var s=document.getElementById("number").value;
+    //     var ss=s.length;
+    //     var i=0;
+    //     var bbb;
+    //     var z=0;
+    //     alert("hi");
+    //             while( i<ss)
+    //             {
+    //                 bbb=parseInt(s.charAt(i));
+    //                     z+=bbb;
+    //                     i++;
+    //                     alert(z);
+    //             }     
+    //  }
+    function add(){
+        var n=parseInt(document.getElementById("number").value);
+        var m=0;var s;
+        if(n>0){
+        while(n!=0)
+        {
+            s=n%10;
+            m+=s;
+            n=parseInt(n/10);
+        }
+        alert("the sum of digits " +"---------"+m);
+    }
+    else
+    alert("Give a number greater than 0 ")
+    }
+    </script>
+</head>
+<body>
+    <input type="text" id="number">
+    <button type="button" onclick="add()">click me</button>
+</body> 
+</html>

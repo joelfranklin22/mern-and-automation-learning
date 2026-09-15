@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      body {
+        margin-left: 600px;
+        margin-top: 100px;
+      }
+
+      #btn,
+      #btn-2,
+      #btn-3 {
+        margin-top: 10px;
+        margin-left: 100px;
+        padding: 10px 20px 10px 20px;
+        font-size: 1.5rem;
+      }
+      #email-add {
+        padding: 10px;
+        margin-left: 70px;
+      }
+      label {
+        font-size: 1.4rem;
+        margin-left: 100px;
+      }
+      #number {
+        padding: 10px;
+        margin-left: 70px;
+      }
+    </style>
+    <script>
+      function odd() {
+        var sum = 1;
+        var i;
+        for (i = 1; i <= 15; i++) {
+          if (i % 2 != 0) sum = sum * i;
+        }
+        alert("the product of odd integers from 1 to 15" + "----" + sum);
+      }
+      function checking() {
+        var s = document.getElementById("email-add").value;
+        // var reg = /^[a-z0-9]+@gmail\.[c][o][m]{1}$/i;
+        var reg = /^[a-z0-9]+[@gmail.com]+$/i;
+        if (s.match(reg)) alert("Valid Email Format");
+        else alert("InValid Email Format");
+      }
+      function add() {
+        var n = parseInt(document.getElementById("number").value);
+        var m = 0;
+        var s;
+        if (n > 0) {
+          while (n != 0) {
+            s = n % 10;
+            m += s;
+            n = parseInt(n / 10);
+          }
+          alert("the sum of digits " + "---------" + m);
+        } else alert("Give a number greater than 0 ");
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Product -->
+    <h1>The product of odd Integers</h1>
+    <input type="button" value="click me" onclick="odd()" id="btn" />
+    <!-- Email Validation -->
+    <h1 style="margin-left: 70px">Email validation</h1>
+    <label for="">Email Address</label> <br />
+    <br />
+    <input type="email" name="" id="email-add" required /> <br />
+    <button type="button" onclick="checking()" id="btn-2">click me</button>
+    <br />
+    <br />
+    <!-- Sum of digits -->
+    <h1 style="margin-left: 70px">Sum of Digits</h1>
+    <input type="text" id="number" /> <br />
+    <button type="button" onclick="add()" id="btn-3">click me</button>
+  </body>
+</html>

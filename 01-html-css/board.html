@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      .sudoku-board {
+        display: grid;
+        grid-template-columns: repeat(9, 50px);
+      }
+
+      .cell {
+        width: 50px;
+        height: 50px;
+
+        font-size: 20px;
+
+        border: 1px solid #555;
+
+        color: rgb(0, 0, 0);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="sudoku-board"></div>
+  </body>
+  <script>
+    let board = document.querySelector(".sudoku-board");
+
+    for (let row = 0; row < 9; row++) {
+      for (let col = 0; col < 9; col++) {
+        let input = document.createElement("input");
+
+        input.type = "text";
+
+        input.maxLength = "1";
+
+        input.classList.add("cell");
+
+        board.appendChild(input);
+      }
+    }
+  </script>
+</html>
+
+<!-- 
+Create a React Component
+Props in React
+Conditional Rendering
+Map (Dynamic Content)
+Handling Missing Data
+Sorting & Filtering
+Click Events Handling
+Use State Hook
+Methods as Props
+Use Effect Hook
+Error Handling
+Custom Hooks in React
+React Router
+Clean Up & Updater Function
+Use Context Hook
+Dynamic Path (params)
+useCallback & useMemo        
+Form Validation              
+Environment Variables (.env) 
+localStorage (Advanced)      
+Cache     
+                
+Lazy Loading                 
+Callback                     
+Redux / Zustand              
+Protected Routes     -->
+
+

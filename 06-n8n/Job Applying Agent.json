@@ -1,0 +1,184 @@
+{
+  "name": "Job Applying Agent",
+  "nodes": [
+    {
+      "parameters": {},
+      "id": "e00a3250-c88a-4402-977e-8e11dca0e157",
+      "name": "Manual Trigger",
+      "type": "n8n-nodes-base.manualTrigger",
+      "typeVersion": 1,
+      "position": [
+        512,
+        448
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://remoteok.com/api",
+        "options": {}
+      },
+      "id": "2780cff6-67d0-4e20-bc68-5ba65e073bce",
+      "name": "Get Jobs",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        656,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\n// Convert object to array if needed\nconst jobs = Array.isArray(data) ? data : [data];\n\nconst keywords = ['java', 'javascript', 'react', 'node'];\n\nconst filtered = jobs.filter(job => {\n  const text = JSON.stringify(job).toLowerCase();\n  return keywords.some(k => text.includes(k));\n});\n\nreturn filtered.map(job => ({\n  json: job\n}));"
+      },
+      "id": "8c19f7e6-10f0-4aa3-8a8f-3dfd1ab03616",
+      "name": "Filter Jobs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        912,
+        176
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_CHAT_ID",
+        "additionalFields": {}
+      },
+      "id": "25a7a26c-8fd1-436f-a807-f7804052d3a1",
+      "name": "Telegram",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1152,
+        176
+      ],
+      "webhookId": "0c0eea9c-98ed-458a-852a-d04eada0e358",
+      "credentials": {
+        "telegramApi": {
+          "id": "QuFyqR8xL6qhy4PE",
+          "name": "Jarvis Agent"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://remoteok.com/api",
+        "options": {}
+      },
+      "id": "7dc955bb-1105-4976-a5cd-c4328c967fe1",
+      "name": "Get Jobs1",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [
+        912,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $input.first().json;\n\n// Convert object to array if needed\nconst jobs = Array.isArray(data) ? data : [data];\n\nconst keywords = ['java', 'javascript', 'react', 'node'];\n\nconst filtered = jobs.filter(job => {\n  const text = JSON.stringify(job).toLowerCase();\n  return keywords.some(k => text.includes(k));\n});\n\nreturn filtered.map(job => ({\n  json: job\n}));"
+      },
+      "id": "9f1dc50b-07e7-4635-851e-cfe0e31d08f6",
+      "name": "Filter Jobs1",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1168,
+        416
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "YOUR_CHAT_ID",
+        "text": "=🚀 {{$json.position}}\n\n🏢 {{$json.company}}\n\n🔗 {{$json.url}}",
+        "additionalFields": {}
+      },
+      "id": "1d199f34-d20d-45bc-a9de-ed0307f3cd7d",
+      "name": "Telegram1",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1,
+      "position": [
+        1408,
+        416
+      ],
+      "webhookId": "fa9f382e-e305-4729-89f7-0aed40b40bb0",
+      "credentials": {
+        "telegramApi": {
+          "id": "qYmHupxeWZNrnObS",
+          "name": "Spotify Bot"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Manual Trigger": {
+      "main": [
+        [
+          {
+            "node": "Get Jobs1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Jobs": {
+      "main": [
+        [
+          {
+            "node": "Filter Jobs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Jobs": {
+      "main": [
+        [
+          {
+            "node": "Telegram",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get Jobs1": {
+      "main": [
+        [
+          {
+            "node": "Filter Jobs1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Filter Jobs1": {
+      "main": [
+        [
+          {
+            "node": "Telegram1",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "b1d49373-cd67-40c4-a184-a8db42e6baa6",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "872cf515a8a57099421277b576e119a5b910866ac7ead4ce8d8314cc3d209e11"
+  },
+  "nodeGroups": [],
+  "id": "m0t5Nsk0BjU1kjVE",
+  "tags": []
+}
