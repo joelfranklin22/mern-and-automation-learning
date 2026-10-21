@@ -1,5 +1,12 @@
 {
   "dependencies": {
     "crypto": "^1.0.1"
+  },
+  "name": "07-password-hashing",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
   }
 }
