@@ -17,7 +17,7 @@ function toBcryptBase64(buffer) {
     const b3 = buffer[i + 2] || 0;
 
     result += alphabet[b1 >> 2];
-    console.log(result);
+    console.log(i,result);
 
     result += alphabet[((b1 & 0x03) << 4) | (b2 >> 4)];
     console.log(result);
